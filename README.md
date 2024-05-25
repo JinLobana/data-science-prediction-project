@@ -59,4 +59,6 @@ reading_from_csv()
 searching_through_df(df, ids)
 ``` 
 
-> Przeszukuje dataframe ze statystykami z danego sezonu, szuka *Player_ID*, graczy którzy dostali nagrodę. Tworzy listę Y o długości dataframe, z informacją **1** = wybrany do którejkolwiek drużyny all NBA oraz **0** = nie wybrany. 
+> Przeszukuje dataframe ze statystykami z danego sezonu, szuka *Player_ID*, graczy którzy dostali nagrodę. Tworzy listę Y o długości dataframe, z informacją  
+**1** = wybrany do którejkolwiek drużyny all NBA oraz  
+**0** = nie wybrany. 
