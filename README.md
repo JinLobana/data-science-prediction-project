@@ -1,5 +1,7 @@
 # projekt predykcja drużyn All Nba i Rookies
 
+Uruchomienie skryptu: ```python main.py```
+
 ## Przygotowanie danych
 ### All NBA
 Plik ```python preparing_data.py```  

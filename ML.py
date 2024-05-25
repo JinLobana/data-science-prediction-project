@@ -34,6 +34,7 @@ import pandas as pd
 import missingno as msno
 import seaborn as sns
 import os
+import json
 
 from nba_api.stats.static import players, teams
 
@@ -282,6 +283,15 @@ def get_best_hyper_parameters(X_list, Y_list, choose_method):
 
     return best_parameters_hist
 
+def save_to_json(team1, team2, team3):
+    all_nba_teams = {
+        "first all-nba team": team1,
+        "second all-nba team": team2,
+        "third all-nba team": team3
+    }
+    with open("Lubina_Jan_all_nba.json", 'w') as file:
+        json.dump(all_nba_teams, file, indent=2)
+
 def ensembling_classifiers(X_list, Y_list, choose_method):
 
     X_combined_df, Y_combined_list = merge_all_data(X_list, Y_list)
@@ -348,19 +358,22 @@ def ensembling_classifiers(X_list, Y_list, choose_method):
         first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
         second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
         third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
-        print("zwyczajny hist grad boosting")
-        print(get_names_from_id(first_team_ids))
-        print(get_names_from_id(second_team_ids))
-        print(get_names_from_id(third_team_ids))
+        # print("zwyczajny hist grad boosting")
+        # print(get_names_from_id(first_team_ids))
+        # print(get_names_from_id(second_team_ids))
+        # print(get_names_from_id(third_team_ids))
+
+        save_to_json(get_names_from_id(first_team_ids),get_names_from_id(second_team_ids),get_names_from_id(third_team_ids))
 
     cm = confusion_matrix(Y_list[35], Y_predict)
     cm_display = ConfusionMatrixDisplay(cm).plot()
-    plt.show()
+    # plt.show()
 
     return Y_predict
 
 
 def get_names_from_Y_list(X, all_nba_or_not):
+
     # Convert to pandas in order to create mask
     mask = pd.Series(all_nba_or_not)
 
@@ -394,7 +407,8 @@ def main():
     # os.system('say "your program has finished! Come to me my master!"')
 
 
-main()
+if __name__ == "__main__":
+    main()
 
 
 # !!! didnt use that at the end

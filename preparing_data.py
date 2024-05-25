@@ -110,7 +110,8 @@ def main():
 
     saving_avg_values()
 
-main()
+if __name__ == "__main__":
+    main()
 
 
 # not used at the end!
