@@ -361,15 +361,17 @@ def ensembling_classifiers(X_list, Y_list, choose_method):
 
 
 def get_names_from_Y_list(X, all_nba_or_not):
-    # Konwersja listy do serii pandas, aby móc używać jej jako maski
+    # Convert to pandas in order to create mask
     mask = pd.Series(all_nba_or_not)
 
-    # Zastosowanie maski do dataframe
+    # getting ids of players in all nba
     player_ids = X['PLAYER_ID'][mask == 1].tolist()
 
     return get_names_from_id(player_ids)
 
 def main():
+
+    method = 2
     # 0 is 1988-89 season
     # 34 is 2022-2023 season 
     # 35 is our prediction, 2023-24 season
@@ -378,7 +380,7 @@ def main():
 
     # visualisation(X_list, Y_list)
 
-    # best = get_best_hyper_parameters(X_list, Y_list, 2)
+    # best = get_best_hyper_parameters(X_list, Y_list, method)
     # print(len(best))
     # with open(r'stats/betterSearchHistogram.csv', 'w') as fp:
     #     for item in best:
@@ -386,7 +388,7 @@ def main():
     #         fp.write("%s\n" % item)
     #     print('Done')
 
-    Y_predict = ensembling_classifiers(X_list, Y_list, 2)
+    Y_predict = ensembling_classifiers(X_list, Y_list, method)
     get_names_from_Y_list(X_list[35], Y_predict)
 
     # os.system('say "your program has finished! Come to me my master!"')

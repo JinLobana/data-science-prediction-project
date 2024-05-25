@@ -109,7 +109,9 @@ ensembling_classifiers(X_list, Y_list, choose_method)
 ```python
 get_names_from_Y_list(X, all_nba_or_not)
 ```
-> 
+> Z output naszego uczenia, czyli listy Y (*all_nba_or_not*) ekstrakcja *Player_ID*'s i znalezienie nazwisk zawodników wykorzystując funkcję *get_names_from_id*
 
-
-
+```python
+main()
+```
+> Wywołanie odpowiednich funkcji. Ostatecznie aktywne tylko wczytanie danych i inferencja maszynowa. 
