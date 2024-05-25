@@ -284,6 +284,7 @@ def get_best_hyper_parameters(X_list, Y_list, choose_method):
     return best_parameters_hist
 
 def save_to_json(team1, team2, team3):
+    # saving teams to json file as dictionary
     all_nba_teams = {
         "first all-nba team": team1,
         "second all-nba team": team2,
@@ -371,7 +372,6 @@ def ensembling_classifiers(X_list, Y_list, choose_method):
 
     return Y_predict
 
-
 def get_names_from_Y_list(X, all_nba_or_not):
 
     # Convert to pandas in order to create mask
@@ -404,6 +404,7 @@ def main():
     Y_predict = ensembling_classifiers(X_list, Y_list, method)
     get_names_from_Y_list(X_list[35], Y_predict)
 
+    # in case of long run time use os function to call for master
     # os.system('say "your program has finished! Come to me my master!"')
 
 
