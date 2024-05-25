@@ -62,3 +62,38 @@ searching_through_df(df, ids)
 > Przeszukuje dataframe ze statystykami z danego sezonu, szuka *Player_ID*, graczy którzy dostali nagrodę. Tworzy listę Y o długości dataframe, z informacją  
 **1** = wybrany do którejkolwiek drużyny all NBA oraz  
 **0** = nie wybrany. 
+
+```python
+creating_list_of_all_nba_teams(X_list)
+```
+ 
+> wykorzystuje funkcje *searching_through_df* do stworzenia listy list zakwalifikowanych do nagrody graczy dla każdego sezonu.
+
+```python
+visualisation(X, Y)
+```
+> Funkcja wyświetlająca wszystkie interesujące statystyki, ich korelacje itp.
+
+```python
+get_names_from_id(ids)
+```
+> Funkcja zwraca nazwiska z listy id, używa api.
+
+```python
+find_15_best(array)
+```
+> Funkcja otrzymuje macierz prawdopodobieństwa zwróconą przez metodę *predict_proba()* klasyfikatora **HistGradientBoostClassifier**. Tworzy listy 1, 2, 3 drużyny all NBA. 
+
+```python
+merge_all_data(X_list, Y_list)
+```
+> W celu uczenia pojedynczego klasyfikatora funkcja łączy listy dataframe'ów w jeden ogromny zestaw danych wejściowych i wyjściowych.
+
+
+```python
+get_best_hyper_parameters(X_list, Y_list, choose_method)
+```
+> 
+
+
+

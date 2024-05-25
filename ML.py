@@ -155,65 +155,23 @@ def get_names_from_id(ids):
         all_nba_names.append(dictionary.get('full_name'))
     return all_nba_names
 
-# !!! didnt use that at the end
-def most_frequent(List):
-    counter = 0
-    num = List[0]
-    for i in List:
-        curr_frequency = List.count(i)
-        if(curr_frequency> counter):
-            counter = curr_frequency
-            num = i
-    return num
-
-# !!! didnt use that at the end
-def find_5_best_pred_for_each_team(dictionary, array):
-    # function searches for 5, 10, 15 best picks all nba teams, given probabilities from predict_proba
-    # then creates (and returns) a list in a way, that Y is created by searching_through_df
-    # so we can compare predictions and true values of Y
-    all_nba_or_not = [0] * len(array)
-    # Using argpartition to find index of 5,10,15 biggest values of probablities
-    top_5_indices = np.argpartition(array[:, 1], -5)[-5:]
-    top_10_indices = np.argpartition(array[:, 2], -10)[-10:]
-    top_15_indices = np.argpartition(array[:, 3], -15)[-15:]
-    # sorting indexes in order of the biggest values (biggest probabilities last)
-    sorted_top_5_indices = top_5_indices[np.argsort(array[top_5_indices, 1])]
-    sorted_top_10_indices = top_10_indices[np.argsort(array[top_10_indices, 2])]
-    sorted_top_15_indices = top_15_indices[np.argsort(array[top_15_indices, 3])]
-    # changing orded to get indexes diminishing values (biggest probabilities first)
-    top_5_indices_team1 = sorted_top_5_indices[::-1].tolist()
-    top_10_indices_team2 = sorted_top_10_indices[::-1]
-    top_15_indices_team3 = sorted_top_15_indices[::-1]
-
-    # checking if the biggest probabilities of two all nba teams did not occur for the same index
-    top_indices_team2 = [x for x in top_10_indices_team2 if x not in top_5_indices_team1]
-    top_indices_team3 = [x for x in top_15_indices_team3 if x not in top_5_indices_team1 and x not in top_10_indices_team2]
-    top_5_indices_team2 = top_indices_team2[:5]
-    top_5_indices_team3 = top_indices_team3[:5]
-
-    # getting 5 highest values for 5 indexes
-    top_5_values_team1 = array[top_5_indices_team1, 1]
-    top_5_values_team2 = array[top_5_indices_team2, 2]
-    top_5_values_team3 = array[top_5_indices_team3, 3]
-    
-    # for right indexes save which all nba team 
-    for i in top_5_indices_team1: all_nba_or_not[i] = dictionary["first team"]
-    for j in top_5_indices_team2: all_nba_or_not[j] = dictionary["second team"]
-    for k in top_5_indices_team3: all_nba_or_not[k] = dictionary["third team"]
-
-    return all_nba_or_not
-
 def find_15_best(array):
+    # function gets array of probability of belongingness to every class
+    # it's a returned array from a method predict_proba()
+
+    # creating lists of 0 of array's length
     all_nba_or_not = [0] * len(array)
     first_team_or_not = [0] * len(array)
     second_team_or_not = [0] * len(array)
     third_team_or_not = [0] * len(array)
-
+    # choosing indices for highest probability of belongingness
     top_15_indices = np.argpartition(array[:, 1], -15)[-15:]
+    # assignment to a specific team
     first_team = top_15_indices[10:]
     second_team = top_15_indices[5:10]
     third_team = top_15_indices[:5]
     
+    # giving 1 for right indices 
     for i in top_15_indices: all_nba_or_not[i] = 1
     for i in first_team: first_team_or_not[i] = 1
     for i in second_team:  second_team_or_not[i] = 1
@@ -222,6 +180,8 @@ def find_15_best(array):
     return all_nba_or_not, first_team_or_not, second_team_or_not, third_team_or_not
 
 def merge_all_data(X_list, Y_list):
+    # Creates combined statistics of all seasons
+    # The same for output data
     X_list_train = X_list[:35];  Y_list_train = Y_list[:35]
     X_combined_df = pd.DataFrame()
     for season in range(len(X_list_train)):
@@ -268,29 +228,8 @@ def get_best_hyper_parameters(X_list, Y_list, choose_method):
 
             best_parameters_hist.append(f"SEASON:,{season},precision:,{old_precision},best mi:,{best_mi},best lr:,{best_lr},best md:,{best_md}")
             print(best_parameters_hist[season])
-    
+
     if choose_method==1:
-        X_combined_df, Y_combined_list = merge_all_data(X_list, Y_list)
-        
-        old_precision = 0.0
-        for m_i in max_ite:
-            for l_r in learning_rate:
-                for m_d in max_depth:
-
-                    clf_hist = ensemble.HistGradientBoostingClassifier(max_iter = m_i, learning_rate = l_r, max_depth = m_d)
-                    clf_hist.fit(X_combined_df, Y_combined_list)
-                    hist_proba = clf_hist.predict_proba(X_list[35])
-                    Y_predict, _,_,_ = find_15_best(hist_proba)
-
-                    # trying to maximise precision, I think it is best score function here
-                    new_precision = precision_score(Y_list[35], Y_predict)
-                    if new_precision > old_precision:
-                        best_mi = m_i; best_lr = l_r; best_md = m_d
-                        old_precision = new_precision
-
-        print(f"precision:,{old_precision},best mi:,{best_mi},best lr:,{best_lr},best md:,{best_md}")
-
-    if choose_method==2:
         # from <0 to 34> 
         X_list.pop(35)
         for season in range(0,35):
@@ -319,27 +258,31 @@ def get_best_hyper_parameters(X_list, Y_list, choose_method):
 
             best_parameters_hist.append(f"SEASON:,{season},precision:,{old_precision},best mi:,{best_mi},best lr:,{best_lr},best md:,{best_md}")
             print(best_parameters_hist[season])
+    
+    if choose_method==2:
+        X_combined_df, Y_combined_list = merge_all_data(X_list, Y_list)
+        
+        old_precision = 0.0
+        for m_i in max_ite:
+            for l_r in learning_rate:
+                for m_d in max_depth:
 
-    if choose_method==3:
-            random_search = RandomizedSearchCV(
-                            ensemble.HistGradientBoostingClassifier(),
-                            param_distributions=param_distributions,
-                            n_iter=500,
-                            scoring='precision',
-                            random_state=42,
-                            n_jobs=-1)
-            random_search.fit(X_combined_df, Y_combined_list)
-            best_parameters = random_search.best_params_
-            
+                    clf_hist = ensemble.HistGradientBoostingClassifier(max_iter = m_i, learning_rate = l_r, max_depth = m_d)
+                    clf_hist.fit(X_combined_df, Y_combined_list)
+                    hist_proba = clf_hist.predict_proba(X_list[35])
+                    Y_predict, _,_,_ = find_15_best(hist_proba)
 
-            hist_proba = random_search.predict_proba(X_season)
-            Y_predict = find_15_best(hist_proba)
-            precision = precision_score(Y_season, Y_predict)
+                    # trying to maximise precision, I think it is best score function here
+                    new_precision = precision_score(Y_list[35], Y_predict)
+                    if new_precision > old_precision:
+                        best_mi = m_i; best_lr = l_r; best_md = m_d
+                        old_precision = new_precision
 
-            print(f"precision: {precision}, best_parameters:{best_parameters}")
-            best_parameters_hist.append(f"precision:,{random_search.best_score_},best_parameters:,{best_parameters}")
+        print(f"precision:,{old_precision},best mi:,{best_mi},best lr:,{best_lr},best md:,{best_md}")
 
-    return best_parameters_hist
+    
+
+       return best_parameters_hist
 
 def ensembling_classifiers(X_list, Y_list):
     ############### first voting
@@ -446,8 +389,6 @@ def main():
     X_list = reading_from_csv()
     Y_list = creating_list_of_all_nba_teams(X_list)
 
-    
-
     # visualisation(X_list, Y_list)
 
     # best = get_best_hyper_parameters(X_list, Y_list, 1)
@@ -469,3 +410,74 @@ def main():
 
 main()
 
+
+# !!! didnt use that at the end
+# def most_frequent(List):
+#     counter = 0
+#     num = List[0]
+#     for i in List:
+#         curr_frequency = List.count(i)
+#         if(curr_frequency> counter):
+#             counter = curr_frequency
+#             num = i
+#     return num
+
+# # !!! didnt use that at the end
+# def find_5_best_pred_for_each_team(dictionary, array):
+#     # function searches for 5, 10, 15 best picks all nba teams, given probabilities from predict_proba
+#     # then creates (and returns) a list in a way, that Y is created by searching_through_df
+#     # so we can compare predictions and true values of Y
+#     all_nba_or_not = [0] * len(array)
+#     # Using argpartition to find index of 5,10,15 biggest values of probablities
+#     top_5_indices = np.argpartition(array[:, 1], -5)[-5:]
+#     top_10_indices = np.argpartition(array[:, 2], -10)[-10:]
+#     top_15_indices = np.argpartition(array[:, 3], -15)[-15:]
+#     # sorting indexes in order of the biggest values (biggest probabilities last)
+#     sorted_top_5_indices = top_5_indices[np.argsort(array[top_5_indices, 1])]
+#     sorted_top_10_indices = top_10_indices[np.argsort(array[top_10_indices, 2])]
+#     sorted_top_15_indices = top_15_indices[np.argsort(array[top_15_indices, 3])]
+#     # changing orded to get indexes diminishing values (biggest probabilities first)
+#     top_5_indices_team1 = sorted_top_5_indices[::-1].tolist()
+#     top_10_indices_team2 = sorted_top_10_indices[::-1]
+#     top_15_indices_team3 = sorted_top_15_indices[::-1]
+
+#     # checking if the biggest probabilities of two all nba teams did not occur for the same index
+#     top_indices_team2 = [x for x in top_10_indices_team2 if x not in top_5_indices_team1]
+#     top_indices_team3 = [x for x in top_15_indices_team3 if x not in top_5_indices_team1 and x not in top_10_indices_team2]
+#     top_5_indices_team2 = top_indices_team2[:5]
+#     top_5_indices_team3 = top_indices_team3[:5]
+
+#     # getting 5 highest values for 5 indexes
+#     top_5_values_team1 = array[top_5_indices_team1, 1]
+#     top_5_values_team2 = array[top_5_indices_team2, 2]
+#     top_5_values_team3 = array[top_5_indices_team3, 3]
+    
+#     # for right indexes save which all nba team 
+#     for i in top_5_indices_team1: all_nba_or_not[i] = dictionary["first team"]
+#     for j in top_5_indices_team2: all_nba_or_not[j] = dictionary["second team"]
+#     for k in top_5_indices_team3: all_nba_or_not[k] = dictionary["third team"]
+
+#     return all_nba_or_not
+
+
+
+# to function ensambling_classifiers: 
+
+#  if choose_method==3:
+#             random_search = RandomizedSearchCV(
+#                             ensemble.HistGradientBoostingClassifier(),
+#                             param_distributions=param_distributions,
+#                             n_iter=500,
+#                             scoring='precision',
+#                             random_state=42,
+#                             n_jobs=-1)
+#             random_search.fit(X_combined_df, Y_combined_list)
+#             best_parameters = random_search.best_params_
+            
+
+#             hist_proba = random_search.predict_proba(X_season)
+#             Y_predict = find_15_best(hist_proba)
+#             precision = precision_score(Y_season, Y_predict)
+
+#             print(f"precision: {precision}, best_parameters:{best_parameters}")
+#             best_parameters_hist.append(f"precision:,{random_search.best_score_},best_parameters:,{best_parameters}")
