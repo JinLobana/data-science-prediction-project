@@ -62,6 +62,7 @@ def reading_all_nba():
 
 def reading_from_csv():
     # reading stats from csv
+    # creating list of dataframes containing avg statistics 
     dfs = []
     for i in range(1988,2024):
 
@@ -75,7 +76,7 @@ def reading_from_csv():
         df_filtered = df_filtered.reset_index(drop=True)
         dfs.append(df_filtered)
 
-        #visualizing missing values
+        # visualizing missing values
         # msno.matrix(df)
     return dfs
 
@@ -467,66 +468,4 @@ def main():
 
 
 main()
-
-
-# print(players.find_player_by_id(203076))
-
-
-
-                # dict_of_values = {
-                #         "not selected": 0,
-                #         "first team": 1,
-                #         "second team": 2,
-                #         "third team": 3
-                #         }
-                # Tworzenie miary f1-score z macro averaging, dającej równą wagę każdej klasie, niezależnie od liczebności
-                #  macro_f1 = make_scorer(f1_score, average='macro')
-                # Przykładowe parametry dla RandomizedSearchCV
-                #     max_ite = [int(x) for x in np.linspace(2,37,36)]
-                #     learning_rate = [np.round(x, 3) for x in np.linspace(0.1,0.7,61)]
-                #     max_depth = [int(x) for x in np.linspace(1,11,10)]
-                #     max_depth.append(None)
-                # Randomized Search z użyciem f1-score z macro averaging
-                #         random_search = HalvingGridSearchCV(
-                #             ensemble.HistGradientBoostingClassifier(),#class_weight={0: 1, 1: 10, 2: 10, 3: 10}),
-                #             param_grid=param_distributions,
-                #             # n_iter=500,
-                #             scoring=macro_f1,
-                #             factor=2,
-                #             min_resources=len(Y_list[season]),
-                #             resource="n_samples",
-                #             #resource="n_estimators", + recznie wpisac ile jest estmyatorów
-                #             random_state=42,
-                #             n_jobs=-1
-                #         )
-                # my_list = get_best_hyper_parameters(dict_of_values, X_list, Y_list)
-                #     print(len(my_list))
-                #     with open(r'plik.txt', 'w') as fp:
-                #         for item in my_list:
-                #             # write each item on a new line
-                #             fp.write("%s\n" % item)
-                #         print('Done')
-
-                # best_parameters = random_search.best_params_
-                # print(best_parameters)
-                # most_frequent_list.append(best_parameters)
-
-
-
-#TODO TODO TODO TODO - when there will be access to all NBA 2023-24
-# cm_hgb = confusion_matrix(y_test, y_pred_hgb)
-# print(cm_hgb)
-# from mlxtend.plotting import plot_confusion_matrix
-# fig, ax = plot_confusion_matrix(conf_mat=cm_hgb, figsize=(6, 6), cmap=plt.cm.Greens)
-# plt.xlabel('Predictions', fontsize=18)
-# plt.ylabel('Actuals', fontsize=18)
-# plt.title('Confusion Matrix', fontsize=18)
-# plt.show()
-# accuracy_score(y_test, y_pred_hgb)
-# roc_auc_score(y_test, y_pred_hgb)
-# acc_hgb = cross_val_score(estimator = hgb_classifier, X = X_train, y = y_train, cv = 10)
-# print("Accuracy of hgb: {:.2f} %".format(acc_hgb.mean()*100))
-# print("SD of hgb: {:.2f} %".format(acc_hgb.std()*100))
-# print(metrics.classification_report(y_test, y_pred_hgb))
-#TODO TODO TODO TODO - when there will be access to all NBA 2023-24
 

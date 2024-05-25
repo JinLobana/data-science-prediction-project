@@ -41,5 +41,22 @@ main()
 
 ## Uczenie maszynowe
 Plik ```python ML.py```  
-        Wczytuje statystyki oraz wyniki (plik all_nba), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym _grid search_, 
-        na koniec implementuje uczenie maszynowe, wybrany zostaje model z najlepszymi wynikami. 
+Wczytuje statystyki oraz wyniki (plik all_nba.csv), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym **grid search**, 
+na koniec implementuje uczenie maszynowe, wybrany zostaje model z najlepszymi wynikami. 
+
+
+```python
+reading_all_nba()
+``` 
+> Odczytanie nazwisk graczy wybranych do all NBA w każdym roku, zapisanie do pliku w tym samym formacie ich ID. 
+
+```python
+reading_from_csv()
+``` 
+> Odczytuje statystyki, zapisuje do pandas dataframe, odczuca (po analizie) część graczy, którzy nie mają szans na zdobycie nagrody (wyrównanie proporcji klasyfikacji), tworzy listę wszystkich dataframe. 
+
+```python 
+searching_through_df(df, ids)
+``` 
+
+> Przeszukuje dataframe ze statystykami z danego sezonu, szuka *Player_ID*, graczy którzy dostali nagrodę. Tworzy listę Y o długości dataframe, z informacją **1** = wybrany do którejkolwiek drużyny all NBA oraz **0** = nie wybrany. 
