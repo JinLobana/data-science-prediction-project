@@ -17,7 +17,7 @@ from nba_api.stats.static import players, teams
 import pandas as pd
 import numpy as np
 
-# function not used at the end, 
+# not used at the end!
 # gets ids of all players active in given season
 def get_active_player_ids_giv_season(Season):
     players_data = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=Season)
