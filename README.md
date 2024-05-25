@@ -40,5 +40,6 @@ main()
 ### Rookies
 
 ## Uczenie maszynowe
-Plik ```python ML.py``` 
-        Wczytuje statystyki oraz wyniki (plik all_nba), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym #grid search#. 
+Plik ```python ML.py```  
+        Wczytuje statystyki oraz wyniki (plik all_nba), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym _grid search_, 
+        na koniec implementuje uczenie maszynowe, wybrany zostaje model z najlepszymi wynikami. 
