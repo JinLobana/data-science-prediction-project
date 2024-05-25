@@ -17,15 +17,6 @@ from nba_api.stats.static import players, teams
 import pandas as pd
 import numpy as np
 
-# not used at the end!
-# gets ids of all players active in given season
-def get_active_player_ids_giv_season(Season):
-    players_data = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=Season)
-    players_df = players_data.get_data_frames()[0]
-    # choosing just id for later on 
-    players_active_df = players_df['PERSON_ID']
-    return players_active_df
-
 # gets stats of all players in all games they played,
 # then sorts that info, for colculating mean values
 def get_players_stats_from_season(Season):
@@ -121,44 +112,12 @@ def main():
 
 main()
 
-#######################
-### TODO
-# extract players from 2023-24 season with 20 or more min
-######################
 
-
-# just for 2023 season
-# na później
-# def players_id_twenty_or_more_minutes():
-#     # Pobierz dzienniki gier dla wszystkich graczy w bieżącym sezonie
-#     player_logs = playergamelogs.PlayerGameLogs().get_data_frames()[0]
-
-#     # Zgrupuj dzienniki gier według identyfikatora gracza i oblicz sumę minut dla każdego gracza
-#     player_minutes = player_logs.groupby('PLAYER_ID')['MIN'].sum()
-#     print(player_logs.columns)
-
-#     # Wybierz graczy, którzy grali co najmniej 65 meczy i każdy mecz trwał co najmniej 20 minut
-#     qualified_players = player_minutes[(player_logs.groupby('PLAYER_ID')['GAME_ID'].count() >= 65) & (player_minutes >= (65 * 20))]
-
-#     # Wyświetl wyniki
-#     print(qualified_players)
-
-# def players_id_twenty_or_more_minutes(PlayersIDs):
-#     counter = 0
-#     Ids = []
-#     for PlayerID in PlayersIDs:
-#         gamelog = playergamelog.PlayerGameLog(player_id=PlayerID, season=2023)
-#         gamelog_df = gamelog.get_data_frames()[0]
-#         min_df = gamelog_df["MIN"]
-#         for min in min_df:
-#             if min >= 20:
-#                 counter += 1
-#         if counter >= 65:
-#             Ids.append(PlayerID)
-#         counter = 0
-
-
-
-
-
-
+# not used at the end!
+# gets ids of all players active in given season
+# def get_active_player_ids_giv_season(Season):
+#     players_data = commonallplayers.CommonAllPlayers(is_only_current_season=1, league_id='00', season=Season)
+#     players_df = players_data.get_data_frames()[0]
+#     # choosing just id for later on 
+#     players_active_df = players_df['PERSON_ID']
+#     return players_active_df
