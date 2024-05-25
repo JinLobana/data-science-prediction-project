@@ -3,7 +3,7 @@
 ## Przygotowanie danych
 ### All NBA
 Plik ```python preparing_data.py```  
-    W skrócie jest to zestaw funkcji, który pobiera dane z api, następnie je odpowiednio przetwarza i zapisuje do plików w formacie csv.  
+      W skrócie jest to zestaw funkcji, który pobiera dane z api, następnie je odpowiednio przetwarza i zapisuje do plików w formacie csv.  
 
 ```python
 get_players_stats_from_season(Season)
@@ -40,5 +40,5 @@ main()
 ### Rookies
 
 ## Uczenie maszynowe
-Plik ML.py  
-    Wczytuje statystyki, 
+Plik ```python ML.py``` 
+        Wczytuje statystyki oraz wyniki (plik all_nba), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym #grid search#. 
