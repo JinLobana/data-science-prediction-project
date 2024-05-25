@@ -186,7 +186,7 @@ def merge_all_data(X_list, Y_list):
     X_combined_df = pd.DataFrame()
     for season in range(len(X_list_train)):
         X_combined_df = pd.concat([X_combined_df, X_list_train[season]], axis=0, ignore_index=True)
-    X_combined_df.to_csv("X_combined.csv")
+    X_combined_df.to_csv("stats/X_combined.csv")
 
     Y_combined_list = sum(Y_list_train, [])
 
@@ -280,97 +280,84 @@ def get_best_hyper_parameters(X_list, Y_list, choose_method):
 
         print(f"precision:,{old_precision},best mi:,{best_mi},best lr:,{best_lr},best md:,{best_md}")
 
-    
+    return best_parameters_hist
 
-       return best_parameters_hist
+def ensembling_classifiers(X_list, Y_list, choose_method):
 
-def ensembling_classifiers(X_list, Y_list):
-    ############### first voting
-    df = pd.read_csv("stats/GridSearchHistogram.csv")
-    columns = ["m_i","l_r","m_d"]
-    parameters = df[columns]
-
-    list_of_classifiers = [(f"clf{season}" ,ensemble.HistGradientBoostingClassifier(max_iter=parameters.loc[season, 'm_i'],
-                                                                   learning_rate=parameters.loc[season, 'l_r'],
-                                                                   max_depth=parameters.loc[season, 'm_d'])) for season in range(34)]
-    
-    clf_vote = ensemble.VotingClassifier(estimators=list_of_classifiers, voting="soft", n_jobs=-1, verbose=False)
-
-    
     X_combined_df, Y_combined_list = merge_all_data(X_list, Y_list)
-    
-    clf_vote.fit(X_combined_df, Y_combined_list)
-    vote_proba = clf_vote.predict_proba(X_list[35])
-    Y_predict, first_team, second_team, third_team = find_15_best(vote_proba)
+    ############# first voting
+    if choose_method == 0:
+        df = pd.read_csv("stats/GridSearchHistogram.csv")
+        columns = ["m_i","l_r","m_d"]
+        parameters = df[columns]
 
-    first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
-    second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
-    third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
-    print("pierwszy voting")
-    print(get_names_from_id(first_team_ids))
-    print(get_names_from_id(second_team_ids))
-    print(get_names_from_id(third_team_ids))
-    ############# end first voting
+        list_of_classifiers = [(f"clf{season}" ,ensemble.HistGradientBoostingClassifier(max_iter=parameters.loc[season, 'm_i'],
+                                                                    learning_rate=parameters.loc[season, 'l_r'],
+                                                                    max_depth=parameters.loc[season, 'm_d'])) for season in range(34)]
+        
+        clf_vote = ensemble.VotingClassifier(estimators=list_of_classifiers, voting="soft", n_jobs=-1, verbose=False)
+       
+        clf_vote.fit(X_combined_df, Y_combined_list)
+        vote_proba = clf_vote.predict_proba(X_list[35])
+        Y_predict, first_team, second_team, third_team = find_15_best(vote_proba)
+
+        first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
+        second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
+        third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
+        print("pierwszy voting")
+        print(get_names_from_id(first_team_ids))
+        print(get_names_from_id(second_team_ids))
+        print(get_names_from_id(third_team_ids))
+        ############# end first voting
     ############# second histogram voting
-    df2 = pd.read_csv("stats/betterSearchHistogram.csv",keep_default_na=False,na_values=['NaN'])
-    columns2 = ["m_i","l_r","m_d"]
-    parameters2 = df2[columns2]
+    if choose_method == 1:
+        df2 = pd.read_csv("stats/betterSearchHistogram.csv",keep_default_na=False,na_values=['NaN'])
+        columns2 = ["m_i","l_r","m_d"]
+        parameters2 = df2[columns2]
 
-    list_of_classifiers2 = [(f"clf{season}" ,ensemble.HistGradientBoostingClassifier(max_iter=parameters2.loc[season, 'm_i'],
-                                                                   learning_rate=parameters2.loc[season, 'l_r'],
-                                                                   max_depth=parameters2.loc[season, 'm_d'])) for season in range(34)]
-    
-    clf_vote2 = ensemble.VotingClassifier(estimators=list_of_classifiers2, voting="soft", n_jobs=-1, verbose=False)
+        list_of_classifiers2 = [(f"clf{season}" ,ensemble.HistGradientBoostingClassifier(max_iter=parameters2.loc[season, 'm_i'],
+                                                                    learning_rate=parameters2.loc[season, 'l_r'],
+                                                                    max_depth=parameters2.loc[season, 'm_d'])) for season in range(34)]
+        
+        clf_vote2 = ensemble.VotingClassifier(estimators=list_of_classifiers2, voting="soft", n_jobs=-1, verbose=False)
 
-    clf_vote2.fit(X_combined_df, Y_combined_list)
-    vote_proba2 = clf_vote2.predict_proba(X_list[35])
-    Y_predict2, first_team, second_team, third_team = find_15_best(vote_proba2)
+        clf_vote2.fit(X_combined_df, Y_combined_list)
+        vote_proba2 = clf_vote2.predict_proba(X_list[35])
+        Y_predict, first_team, second_team, third_team = find_15_best(vote_proba2)
 
-    first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
-    second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
-    third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
-    print("niby lepszy voting")
-    print(get_names_from_id(first_team_ids))
-    print(get_names_from_id(second_team_ids))
-    print(get_names_from_id(third_team_ids))
-    ############# end second histogram voting
-
-    # best parameters for altogether combined statistic from 1988 to 2021, predicting 2022 with 12/15 precision
-    # max_iter=6 ,learning_rate=0.12 , max_depth=8
-    # best for 2023-24 season:
-    # max_iter=33,learning_rate=0.55,max_depth=11
-    clf_hist = ensemble.HistGradientBoostingClassifier(max_iter=33,learning_rate=0.55,max_depth=11)
-    clf_hist.fit(X_combined_df, Y_combined_list)
-    hist_proba = clf_hist.predict_proba(X_list[35])
-    Y_predict_sinngle_hist, first_team, second_team, third_team = find_15_best(hist_proba)
-
-
-    first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
-    second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
-    third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
-    print("zwyczajny hist grad boosting")
-    print(get_names_from_id(first_team_ids))
-    print(get_names_from_id(second_team_ids))
-    print(get_names_from_id(third_team_ids))
+        first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
+        second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
+        third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
+        print("niby lepszy voting")
+        print(get_names_from_id(first_team_ids))
+        print(get_names_from_id(second_team_ids))
+        print(get_names_from_id(third_team_ids))
+        ############# end second histogram voting
+    ############# normal hist Gradient boosting classifier
+    if choose_method == 2:
+        # best parameters for altogether combined statistic from 1988 to 2021, predicting 2022 with 12/15 precision
+        # max_iter=6 ,learning_rate=0.12 , max_depth=8
+        # best for 2023-24 season:
+        # max_iter=33,learning_rate=0.55,max_depth=11
+        clf_hist = ensemble.HistGradientBoostingClassifier(max_iter=33,learning_rate=0.55,max_depth=11)
+        clf_hist.fit(X_combined_df, Y_combined_list)
+        hist_proba = clf_hist.predict_proba(X_list[35])
+        Y_predict, first_team, second_team, third_team = find_15_best(hist_proba)
 
 
-    print("prawdziwe all nba:")
-    print("shai, nikola, doncic, giannis, tatum")
-    print("Brunson, Edwards, Durant, Kawhi, Davis")
-    print("LeBron, Curry, Sabonis, Haliburton, Booker")
+        first_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
+        second_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
+        third_team_ids = [X_list[35].iloc[i]['PLAYER_ID'] for i in range(len(third_team)) if third_team[i] == 1]
+        print("zwyczajny hist grad boosting")
+        print(get_names_from_id(first_team_ids))
+        print(get_names_from_id(second_team_ids))
+        print(get_names_from_id(third_team_ids))
 
+    cm = confusion_matrix(Y_list[35], Y_predict)
+    cm_display = ConfusionMatrixDisplay(cm).plot()
+    plt.show()
 
-    # cm1 = confusion_matrix(Y_list[35], Y_predict_sinngle_hist)
-    # cm_display1 = ConfusionMatrixDisplay(cm1).plot()
-    
-    # cm = confusion_matrix(Y_list[35], Y_predict)
-    # cm_display = ConfusionMatrixDisplay(cm).plot()
-
-    # cm2 = confusion_matrix(Y_list[35], Y_predict2)
-    # cm_display2 = ConfusionMatrixDisplay(cm2).plot()
-    # plt.show()
-
-    return Y_predict, Y_predict_sinngle_hist, Y_predict2
+    return Y_predict
 
 
 def get_names_from_Y_list(X, all_nba_or_not):
@@ -391,7 +378,7 @@ def main():
 
     # visualisation(X_list, Y_list)
 
-    # best = get_best_hyper_parameters(X_list, Y_list, 1)
+    # best = get_best_hyper_parameters(X_list, Y_list, 2)
     # print(len(best))
     # with open(r'stats/betterSearchHistogram.csv', 'w') as fp:
     #     for item in best:
@@ -399,11 +386,8 @@ def main():
     #         fp.write("%s\n" % item)
     #     print('Done')
 
-    Y_predict_voting, Y_predict_single_hist, Y_predict_better_voting = ensembling_classifiers(X_list, Y_list)
-
-    # get_names_from_Y_list(X_list[35], Y_predict_voting)
-    # get_names_from_Y_list(X_list[35], Y_predict_single_hist)
-    # get_names_from_Y_list(X_list[35], Y_predict_better_voting)
+    Y_predict = ensembling_classifiers(X_list, Y_list, 2)
+    get_names_from_Y_list(X_list[35], Y_predict)
 
     # os.system('say "your program has finished! Come to me my master!"')
 
@@ -461,7 +445,7 @@ main()
 
 
 
-# to function ensambling_classifiers: 
+# to function get_best_hyper_parameters: 
 
 #  if choose_method==3:
 #             random_search = RandomizedSearchCV(

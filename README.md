@@ -94,9 +94,22 @@ merge_all_data(X_list, Y_list)
 get_best_hyper_parameters(X_list, Y_list, choose_method)
 ```
 > Przeszukiwanie hiper parametrów. Dla *choose_method* równej
->- 0 - tworzenie i zapisywanie do słownika najlepszych parametrów klasyfikatorów, które uzyskały najlepszą precyzję, dla danych uczących ograniczonych do pojedynczego sezonu.
->- 1 - to samo co powyżej, ale wykluczam dany sezon i dla niego licze predykcje i precyzję. Liczyło się całą noc 8\)
->- 2 - po prostu znalezienie najlepszych parametrów dla sezonu 2023-24
+>- 0 - Tworzenie i zapisywanie do słownika najlepszych parametrów klasyfikatorów, które uzyskały najlepszą precyzję, dla danych uczących ograniczonych do pojedynczego sezonu.
+>- 1 - To samo co powyżej, ale wykluczam dany sezon i dla niego licze predykcje i precyzję. Liczyło się całą noc 8\)
+>- 2 - Po prostu znalezienie najlepszych parametrów dla sezonu 2023-24, dla połączonych danych
+
+```python
+ensembling_classifiers(X_list, Y_list, choose_method)
+```
+> Uczenie maszynowe i inferencja. Zaimplementowane trzy metody do wyboru, ostatecznie wybrana ostatnia (dawała najlepsze rezultaty)
+>- 0 - Tworzenie klasyfikatora głosującego z wcześniej wyszkolonych mniejszych *HistGradientBoostingClassifier* z metody 0 w funkcji *get_best_hyper_parameters*
+>- 1 - Tworzenie klasyfikatora głosującego z wcześniej wyszkolonych mniejszych *HistGradientBoostingClassifier* z metody 1 w funkcji *get_best_hyper_parameters*
+>- 2 - Inferencja dla połączonych danych, tylko jeden *HistGradientBoostingClassifier*
+
+```python
+get_names_from_Y_list(X, all_nba_or_not)
+```
+> 
 
 
 
