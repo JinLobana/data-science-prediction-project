@@ -2,7 +2,7 @@
 
 ## Przygotowanie danych
 ### All NBA
-Skrypt: preparing_data.py
+Plik preparing_data.py \n 
 W skrócie jest to zestaw funkcji, który pobiera dane z api, następnie je odpowiednio przetwarza i zapisuje do plików w formacie csv. 
 
 ```python
