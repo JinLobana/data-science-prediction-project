@@ -94,9 +94,9 @@ merge_all_data(X_list, Y_list)
 get_best_hyper_parameters(X_list, Y_list, choose_method)
 ```
 > Przeszukiwanie hiper parametrów. Dla *choose_method* równej
-- 0 - tworzenie i zapisywanie do słownika najlepszych parametrów klasyfikatorów, które uzyskały najlepszą precyzję, dla danych uczących ograniczonych do pojedynczego sezonu.
-- 1 - to samo co powyżej, ale wykluczam dany sezon i dla niego licze predykcje i precyzję. Liczyło się całą noc 8\)
-- 2 - po prostu znalezienie najlepszych parametrów dla sezonu 2023-24
+>- 0 - tworzenie i zapisywanie do słownika najlepszych parametrów klasyfikatorów, które uzyskały najlepszą precyzję, dla danych uczących ograniczonych do pojedynczego sezonu.
+>- 1 - to samo co powyżej, ale wykluczam dany sezon i dla niego licze predykcje i precyzję. Liczyło się całą noc 8\)
+>- 2 - po prostu znalezienie najlepszych parametrów dla sezonu 2023-24
 
 
 
