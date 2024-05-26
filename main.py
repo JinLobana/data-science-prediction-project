@@ -20,3 +20,5 @@ if __name__ == "__main__":
     # Save to other file
     with open('Lubina_Jan.json', 'w') as file:
         json.dump(all_nba_teams, file, indent=2)
+
+    
