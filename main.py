@@ -1,11 +1,11 @@
 import ML
-import ML_rookies
+import ML_Rookies
 
 import json
 
 if __name__ == "__main__":
     ML.main()
-    ML_rookies.main()
+    ML_Rookies.main()
 
     # Read files 
     with open('Lubina_Jan_all_nba.json', 'r') as file:

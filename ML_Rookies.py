@@ -62,13 +62,13 @@ def find_10_best(array):
     first_team_or_not = [0] * len(array)
     second_team_or_not = [0] * len(array)
     # choosing indices for highest probability of belongingness
-    top_15_indices = np.argpartition(array[:, 1], -10)[-10:]
+    top_10_indices = np.argpartition(array[:, 1], -10)[-10:]
     # assignment to a specific team
-    first_team = top_15_indices[10:]
-    second_team = top_15_indices[:5]
+    first_team = top_10_indices[5:]
+    second_team = top_10_indices[:5]
     
     # giving 1 for right indices 
-    for i in top_15_indices: all_nba_or_not[i] = 1
+    for i in top_10_indices: all_nba_or_not[i] = 1
     for i in first_team: first_team_or_not[i] = 1
     for i in second_team:  second_team_or_not[i] = 1
 
@@ -127,47 +127,77 @@ def get_best_hyper_parameters(X_list, Y_list):
 
     return best_parameters_hist
 
+def get_names_from_id(ids):
+    all_nba_names = []
+    for id in ids:
+        dictionary = players.find_player_by_id(int(id))
+        all_nba_names.append(dictionary.get('full_name'))
+    return all_nba_names
+
+def save_to_json(team1, team2):
+    # saving teams to json file as dictionary
+    all_rookies_teams = {
+        "first rookie all-nba team": team1,
+        "second rookie all-nba team": team2
+    }
+    with open("Lubina_Jan_rookies.json", 'w') as file:
+        json.dump(all_rookies_teams, file, indent=2)
+
+
+def ML(X_list,Y_list):
+    # best parameters for altogether combined statistic from 1997 to 2021, predicting 2022 with 9/10y precision
+
+    # best for 2023-24 season:
+    # max_iter=6 ,learning_rate=0.12 , max_depth=8
+
+    # Machine learning
+    X_combined_df, Y_combined_df = merge_all_data(X_list, Y_list)
+    Y_combined_list = Y_combined_df['ALL_ROOKIE_TEAM_NUMBER'].values.ravel()
+    clf_hist = ensemble.HistGradientBoostingClassifier(max_iter=6 ,learning_rate=0.12 , max_depth=8)
+    clf_hist.fit(X_combined_df, Y_combined_list)
+
+    # proediction with probabilities
+    hist_proba = clf_hist.predict_proba(X_list[26])
+    Y_predict, first_team, second_team = find_10_best(hist_proba)
+
+    # looking for players ids for all rookies teams
+    first_team_ids = [X_list[26].iloc[i]['PLAYER_ID'] for i in range(len(first_team)) if first_team[i] == 1]
+    second_team_ids = [X_list[26].iloc[i]['PLAYER_ID'] for i in range(len(second_team)) if second_team[i] == 1]
+    
+    print(get_names_from_id(first_team_ids))
+    print(get_names_from_id(second_team_ids))
+    print("precision", precision_score(Y_list[26], Y_predict))
+
+    #visualisation of precision, confusion matrix
+    # cm = confusion_matrix(Y_list[26], Y_predict)
+    # cm_display = ConfusionMatrixDisplay(cm).plot()
+    # plt.show()
+
+
+    save_to_json(get_names_from_id(first_team_ids),get_names_from_id(second_team_ids))
+
+    return Y_predict
+
 def get_ids_from_names(names):
     # list of names as an input, output is information about that player including his Player_ID
     ids = []
     for name in names:
         dictionary = players.find_players_by_full_name(name)
-        ids.append(dictionary)
-        print(dictionary)
+        dictionary = dictionary[0]
+        ids.append(dictionary["id"])
+        print(dictionary["id"])
     return ids
-
-def create_dictionary_to_save():
-     pass
-
 
 def main():
     # index 0 is for year 1997-98, 26 for 2023-24
     X_list = reading_from_csv()
     Y_list = reading_all_rookies()
 
-    print(len(X_list), len(Y_list))
+    # get_ids_from_names(["Chet Holmgren", "Victor Wembanyama","Brandon Miller","Jaime Jaquez Jr.", "Brandin Podziemski", "Dereck Lively", "Amen Thompson", "Keyonte George", "Cason Wallace", "GG Jackson"])
 
-    get_best_hyper_parameters(X_list, Y_list)
+    # get_best_hyper_parameters(X_list, Y_list)
 
-    rookies = {
-        "first rookie all-nba team": [
-            "Chet Holmgren",
-            "Brandon Miller",
-            "Jaime Jaquez Jr.",
-            "Victor Wembanyama",
-            "Keyonte George"
-        ],
-        "second rookie all-nba team": [
-            "Brandin Podziemski",
-            "Scoot Henderson",
-            "Toumani Camara",
-            "Bilal Coulibaly",
-            "Cason Wallace"
-        ]}
-        
-
-    with open('Lubina_Jan_rookies.json', 'w') as file:
-            json.dump(rookies, file, indent=2)
+    predict = ML(X_list, Y_list)
 
 if __name__ == "__main__":
         main()
