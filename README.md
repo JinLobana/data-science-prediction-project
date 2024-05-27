@@ -5,7 +5,9 @@ Uruchomienie skryptu: ```python3 main.py```
 - Moim pierwotnym pomysłem było wykorzystanie klasyfikatora do trzech klas, pierwszej, drugiej i trzeciej drużyny ALL NBA. Jednak stwarzało to dużo problemów, więc koniec końców zdecydowałem się na prostszą metodę, wykorzystanie klasyfikatora binarnego i wykorzystanie funkcji ```predict_proba_()```, do wyszukania najwyższych prawdopodobieństw i przypisania ich po kolei do drużyn ALL NBA.  
 - Chciałem utworzyć zestaw klasyfikatorów, nauczonych z dataset'ów z różnych sezonów i na koniec wykorzystać klasyfikator głosujący. Niestety ostatecznie najlepsze wyniki uzyskałem po połączeniu wszystkich sezonów w jeden duży dataset i nauczeniu klasyfikatora tylko na nim. 
 - Użyłem jednego klasyfikatora, *histogram gradient boosting classifier*, ponieważ obsługuje wartości NaN oraz wcześniej z niego nie korzystałem ;) Szybko liczy, a także daje zadowalające wyniki, dlatego później już nie zmieniałem
-- Wykorzystałem custom'owy Grid Search. Starałem się wykorzystać już zaimplementowany, jednak walidacja krzyżowa w przypadku danych gdzie próbki w klasach są tak bardzo nie zbalansowane (500 graczy nie dostaje nagrody, a tylko 15 tak) psuje wyniki, model się uczy przypisywać prawie zawsze 0 (czyli brak nagrody). 
+- Wykorzystałem custom'owy Grid Search. Starałem się wykorzystać już zaimplementowany, jednak walidacja krzyżowa w przypadku danych gdzie próbki w klasach są tak bardzo nie zbalansowane (500 graczy nie dostaje nagrody, a tylko 15 tak) psuje wyniki, model się uczy przypisywać prawie zawsze 0 (czyli brak nagrody). Implementowałem także Random Search, ale nie byłem zadowolony z wyników. Prawdopodbnie były poprawne, aczkolwiek potem już mi się nie chciało ponownie tego pisać. 
+-- Mój Grid Search optymalizuje precyzję wyniku.
+- Niewykorzystane funkcje (jeśli takowe są) znajdują się zakomentowane na końcu plików.
 
 ## Przygotowanie danych
 ### All NBA
