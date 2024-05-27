@@ -2,7 +2,9 @@
 
 Uruchomienie skryptu: ```main.py```  
 
-Moim pierwotnym pomysłem było wykorzystanie klasyfikatora do trzech klas, pierwszej, drugiej i trzeciej drużyny ALL NBA. Jednak stwarzało to dużo problemów, więc koniec końców zdecydowałem się na prostszą metodę, wykorzystanie klasyfikatora binarnego i wykorzystanie funkcji ```predict_proba_()```. 
+- Moim pierwotnym pomysłem było wykorzystanie klasyfikatora do trzech klas, pierwszej, drugiej i trzeciej drużyny ALL NBA. Jednak stwarzało to dużo problemów, więc koniec końców zdecydowałem się na prostszą metodę, wykorzystanie klasyfikatora binarnego i wykorzystanie funkcji ```predict_proba_()```, do wyszukania najwyższych prawdopodobieństw i przypisania ich po kolei do drużyn ALL NBA.  
+- Chciałem utworzyć zestaw klasyfikatorów, nauczonych z dataset'ów z różnych sezonów i na koniec wykorzystać klasyfikator głosujący. Niestety ostatecznie najlepsze wyniki uzyskałem po połączeniu wszystkich sezonów w jeden duży dataset i nauczeniu klasyfikatora tylko na nim. 
+- Użyłem jednego klasyfikatora, *histogram gradient boosting classifier*, ponieważ obsługuje wartości NaN oraz wcześniej z niego nie korzystałem ;\) 
 
 ## Przygotowanie danych
 ### All NBA
