@@ -120,4 +120,4 @@ class Score():
 if __name__ == "__main__":
     score = Score('correct_result.json')
     score_value = score.getScore('Lubina_Jan.json')
-    print(f'{score_value} / {900}')
+    print(f'{score_value} / {450}')

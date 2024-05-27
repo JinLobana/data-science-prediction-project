@@ -41,6 +41,9 @@ main()
 
 ### Rookies
 
+Plik ```prepating_data_rookies.py```  
+Otrzymałem plik "*stats/from_freinds/player_avg_data.csv*", na jego podstawie jedną funkcją wyodrębnniam i zapisuję do plików sezon po sezonie dane dla debiutantów oraz graczy, którzy uzyskali nagrodę all rookies. 
+
 ## Uczenie maszynowe
 Plik ```python ML.py```  
 Wczytuje statystyki oraz wyniki (plik all_nba.csv), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym **grid search**, 
