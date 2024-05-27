@@ -2,6 +2,7 @@
 
 Uruchomienie skryptu: ```main.py```  
 
+Moim pierwotnym pomysłem było wykorzystanie klasyfikatora do trzech klas, pierwszej, drugiej i trzeciej drużyny ALL NBA. Jednak stwarzało to dużo problemów, więc koniec końców zdecydowałem się na prostszą metodę, wykorzystanie klasyfikatora binarnego i wykorzystanie funkcji ```predict_proba_()```. 
 
 ## Przygotowanie danych
 ### All NBA
