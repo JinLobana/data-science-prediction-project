@@ -2,10 +2,16 @@ import ML
 import ML_Rookies
 
 import json
+import argparse
 
 if __name__ == "__main__":
     ML.main()
     ML_Rookies.main()
+
+    # parser for input parameters
+    parser = argparse.ArgumentParser(description="Machine Learning")
+    parser.add_argument("output_file", type=str, help="path to output json file")
+    args = parser.parse_args()
 
     # Read files 
     with open('Lubina_Jan_all_nba.json', 'r') as file:
@@ -18,7 +24,7 @@ if __name__ == "__main__":
     all_nba_teams.update(rookie_teams)
 
     # Save to other file
-    with open('Lubina_Jan.json', 'w') as file:
+    with open(args.output_file, 'w') as file:
         json.dump(all_nba_teams, file, indent=2)
 
     
