@@ -1,10 +1,11 @@
 # projekt predykcja drużyn All Nba i Rookies
 
-Uruchomienie skryptu: ```python main.py```
+Uruchomienie skryptu: ```main.py```  
+
 
 ## Przygotowanie danych
 ### All NBA
-Plik ```python preparing_data.py```  
+Plik ```preparing_data.py```  
       W skrócie jest to zestaw funkcji, który pobiera dane z api, następnie je odpowiednio przetwarza i zapisuje do plików w formacie csv.  
 
 ```python
@@ -42,10 +43,16 @@ main()
 ### Rookies
 
 Plik ```prepating_data_rookies.py```  
-Otrzymałem plik "*stats/from_freinds/player_avg_data.csv*", na jego podstawie jedną funkcją wyodrębnniam i zapisuję do plików sezon po sezonie dane dla debiutantów oraz graczy, którzy uzyskali nagrodę all rookies. 
+Otrzymałem plik "*stats/from_freinds/player_avg_data.csv*", na jego podstawie jedną funkcją wyodrębniam i zapisuję do plików sezon po sezonie dane dla debiutantów oraz graczy, którzy uzyskali nagrodę all rookies. 
+
+```python
+add_rookies()
+```
+> Odczytanie *player_avg_data.csv*, wybranie odpowiednich kolumn, sortowanie i zapisywanie sezon po sezonie wszystkich debiutantów i tych co otrzymali nagrody.
 
 ## Uczenie maszynowe
-Plik ```python ML.py```  
+### ALL NBA
+Plik ```ML.py```  
 Wczytuje statystyki oraz wyniki (plik all_nba.csv), porównuje dane, tworzy wizualizację, przeszukuje hiperparametry customowym **grid search**, 
 na koniec implementuje uczenie maszynowe, wybrany zostaje model z najlepszymi wynikami. 
 
@@ -120,3 +127,9 @@ get_names_from_Y_list(X, all_nba_or_not)
 main()
 ```
 > Wywołanie odpowiednich funkcji. Ostatecznie aktywne tylko wczytanie danych i inferencja maszynowa. 
+
+### Rookies
+
+Plik ```ML_Rookies.py```  
+Funkcjonalność praktycznie identyczna do ```ML.py```, funkcje były tylko kopiowane i dostosowane do danych. 
+
